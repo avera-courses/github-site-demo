@@ -1,0 +1,21 @@
+# Nome do workflow
+name: Hello World
+# Evento que irá acionar o workflow
+on:
+  workflow_dispatch:    
+# Trabalhos que serão executados
+jobs:
+  # Nome do trabalho
+  hello-world:
+    # Sistema operacional que será utilizado
+    runs-on: ubuntu-latest
+    # Passos que serão executados
+    steps:
+      # Nome do passo
+      - name: Checkout
+        # Ação que será executada
+        uses: actions/checkout@v2
+      # Nome do passo
+      - name: Hello World
+        # Ação que será executada
+        run: echo Hello World
