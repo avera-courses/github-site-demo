@@ -1,4 +1,4 @@
-name: Explore Workflow
+name: explore
 
 on:
   workflow_dispatch:    
