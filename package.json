@@ -1,17 +1,25 @@
 {
     "name": "github-actions-site",
     "version": "1.0.0",
-    "description": "Site que faz parte do materiad para o curso de Github Actions",
-    "main": "index.js",
+    "description": "Site que faz parte do material para o curso de Github Actions",
     "scripts": {
-      "test": "mocha tests"
+        "test": "mocha tests",
+        "build": "parcel build index.html",
+        "start": "live-server dist --open=index.html"
     },
     "dependencies": {
-      "chai": "^4.3.4",
-      "mocha": "^9.1.3",
-      "jsdom": "^19.0.0"
+        "chai": "^4.3.4",
+        "jsdom": "^19.0.0",
+        "mocha": "^11.1.0"
     },
-    "author": "Bruno Brito",
+    "devDependencies": {
+        "live-server": "^1.2.1",
+        "parcel": "^2.8.3",
+        "svgo": "^3.3.2"
+    },
+    "browserslist": [
+        "defaults"
+    ],
+    "author": "Maymisson Goes",
     "license": "MIT"
-  }
-  
+}
