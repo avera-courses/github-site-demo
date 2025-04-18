@@ -1,0 +1,37 @@
+name: outputs
+
+on: 
+  push:
+    branches: [main]  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      versao: ${{ steps.docker_build.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run tests
+        run: npm test
+
+      - name: Build app
+        run: npm run build
+
+      - name: Build Docker image
+        run: |
+          TAG=$(date +%Y-%m-%d-%H-%M-%S)
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          docker build -t github-actions-site:$TAG .  
+        id: docker_build   
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        run: echo "Deploying to server..."  
