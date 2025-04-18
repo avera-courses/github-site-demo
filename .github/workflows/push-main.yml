@@ -27,14 +27,17 @@ jobs:
           path: dist/     
 
   deploy:
-    runs-on: ubuntu-latest
     needs: [build]
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Build app
-        run: echo "Building app..."
+      - name: dowmload artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-site
+          path: download-data/
 
-      - name: Deploy to production
-        run: echo "Deploying to production..."    
+      - name: Display structure of downloaded artifacts
+        run: ls -R download-data
+
+      - name: Deploy to server
+        run: echo "Deploying to server..."  
