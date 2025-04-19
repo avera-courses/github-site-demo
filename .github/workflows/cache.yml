@@ -1,0 +1,49 @@
+name: cache
+
+on: 
+  push:
+    branches: [main]  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      versao: ${{ steps.docker_build.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+      
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          # pega o hash do package-lock.json por menos que seja a modificação, evitando deprecação de dependencias
+          key: npm-cache-dir-${{ hashFiles('**/package-lock.json') }}  
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run tests
+        run: npm test
+
+      - name: Build app
+        run: npm run build
+
+      - name: Build Docker image
+        run: |
+          TAG=$(date +%Y-%m-%d-%H-%M-%S)
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          docker build -t github-actions-site:$TAG .  
+        id: docker_build   
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        run: echo "Deploying ${{ needs.build.outputs.versao }} to server..."  
