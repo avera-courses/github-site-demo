@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+        # pega o diretório do cache do npm
       - name: Get NPM Cache Directory
         id: npm-cache-dir
         shell: bash
@@ -25,16 +25,16 @@ jobs:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
           # pega o hash do package-lock.json por menos que seja a modificação, evitando deprecação de dependencias
           key: npm-cache-dir-${{ hashFiles('**/package-lock.json') }}  
-      
+        # Instala as dependências do projeto NPM
       - name: Install Dependencies
         run: npm install
-      
+        # Executa os testes do projeto NPM
       - name: Run Tests
         run: npm test
-
+        # Executa o build do projeto NPM
       - name: Build App
         run: npm run build
-
+        # Gera uma tag com a data e hora atual para o docker
       - name: TAG Generate
         run: |
           TAG=$(date +%Y-%m-%d-%H-%M-%S)
@@ -51,8 +51,11 @@ jobs:
       - name: Build and Push Docker
         uses: docker/build-push-action@v4
         with:
+          # Raiz do projeto
           context: .
+          # Caminho do Dockerfile
           file: ./Dockerfile
+          # comando a ser executado para pushar a imagem
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-site:${{ steps.docker_build.outputs.tag }}
@@ -65,22 +68,32 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
+          # IAM --> Create User --> Security Credentials --> Create Access Key (CLI) | 
+          # OBS: Crie uma politica de permissão para ECS caso necessário
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # Regão do ECS
           aws-region: us-east-1
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
+          # Caminho do arquivo JSON da task definition ou o nome da task definition ARN
           task-definition-arn: arn:aws:ecs:us-east-1:162438969470:task-definition/github-actions-site
+          # Nome do container que está na task definition
           container-name: github-actions-site
+          # Nome da imagem que será substituída na task definition
           image: ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-site:latest 
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
+          # Nome do serviço que está rodando no cluster ECS
           service: ecs-avera-github-actions-service
+          # Nome do cluster que está rodando o ECS
           cluster: avera-githubactions-cluster
+          # Aguarda a estabilidade do serviço para concluir o deploy se houver algum erro no processo ele também vai dar erro no workflow
+          # OBS: O tempo padrão de espera é 5 minutos, se o serviço não estabilizar nesse tempo o workflow falha
           wait-for-service-stability: true
