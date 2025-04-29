@@ -1,0 +1,14 @@
+name: test variables
+
+on:   
+  workflow_dispatch:
+
+jobs:
+  test-variables-job:
+    name: Test Variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exibir Variables
+        run: |
+          echo "Super Secret: ${{ secrets.SUPER_SECRET }}"
+          echo "Variable CONTADOR: ${{ vars.CONTADOR }}"
