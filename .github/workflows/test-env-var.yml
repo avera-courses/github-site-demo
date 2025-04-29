@@ -19,7 +19,7 @@ jobs:
       - name: Exibir env vars
         env:
           STEP_ENV: "STEP"
-          STEP_SHARED_ENV: "STEP SOBRESCREVEU SHARED"
+          JOB_SHARED_ENV: "STEP SOBRESCREVEU SHARED"
         run: |
           echo "Workflow Level WORKFLOW_ENV: $WORKFLOW_ENV"
           echo "Job Level JOB_ENV: $JOB_ENV"
