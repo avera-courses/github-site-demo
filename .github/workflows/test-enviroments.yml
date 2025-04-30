@@ -1,0 +1,37 @@
+name: test Enviroments
+
+on:   
+  workflow_dispatch:
+
+jobs:
+  dev-job:
+    name: Enviroment DEV
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exibir Enviroments DEV
+        run: |
+          echo "Variable CONTADOR: ${{ vars.CONTA_ID }}"
+          echo "Variable CONTADOR: ${{ vars.CONTADOR }}"
+
+  hml-job:
+    name: Enviroment HML
+    environment: hml
+    needs: dev-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exibir Enviroments HML
+        run: |
+          echo "Variable CONTADOR: ${{ vars.CONTA_ID }}"
+          echo "Variable CONTADOR: ${{ vars.CONTADOR }}"
+
+  prd-job:
+    name: Enviroment PRD
+    environment: prd
+    needs: hml-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exibir Enviroments PRD
+        run: |
+          echo "Variable CONTADOR: ${{ vars.CONTA_ID }}"
+          echo "Variable CONTADOR: ${{ vars.CONTADOR }}"                
