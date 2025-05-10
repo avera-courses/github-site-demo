@@ -8,7 +8,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest] # Testar em diferentes sistemas operacionais
-        node-version: [16, 18, 20] # Testar em diferentes versões do Node.js
+        node-version: [16, 18] # Testar em diferentes versões do Node.js
+        include:
+          - os: ubuntu-latest
+            node-version: 20
+            test: true # Adiciona um teste específico para esta combinação
     runs-on: ${{ matrix.os }} # Usar o sistema operacional definido na matriz
     steps:
       
