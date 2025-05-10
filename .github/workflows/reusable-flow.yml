@@ -1,0 +1,15 @@
+name: reusable flow
+
+on:
+   workflow_call:
+
+jobs:
+  reusable_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run reusable job
+        run: |
+          echo "Esse é um workflow reutilizável"  

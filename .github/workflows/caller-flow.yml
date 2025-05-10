@@ -1,0 +1,8 @@
+name: caller flow
+
+on:
+  workflow_dispatch:
+
+jobs:
+    call_reusable_flow:
+        uses: ./.github/workflows/reusable-flow.yml
