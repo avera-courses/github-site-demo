@@ -28,3 +28,11 @@ jobs:
       - name: Step 6 - Sempre executada
         if: always()
         run: echo "Essa etapa sempre será executada independente do resultado da execução"
+
+  fail-report:
+      runs-on: ubuntu-latest
+      if: failure()
+      needs: status-check
+      steps:
+        - name: Reportar Falha
+          run: echo "O workflow falhou"
