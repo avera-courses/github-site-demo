@@ -21,10 +21,10 @@ jobs:
         if: failure()
         run: echo "Essa etapa só será executada se a etapa anterior falhar"
         
-      - name: Step 1 - Executa em caso de cancelamento
+      - name: Step 5 - Executa em caso de cancelamento
         if: cancelled()
         run: echo "Essa etapa só será executada se a execução for cancelada"
         
-      - name: Step 1 - Sempre executada
+      - name: Step 6 - Sempre executada
         if: always()
         run: echo "Essa etapa sempre será executada independente do resultado da execução"
