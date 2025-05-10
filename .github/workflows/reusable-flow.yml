@@ -8,7 +8,9 @@ on:
                 required: true
                 default: 'DEV'
                 type: string
-
+        secrets:
+            SUPER_SECRET:
+                required: true
 jobs:
   reusable_job:
     runs-on: ubuntu-latest
@@ -18,4 +20,5 @@ jobs:
 
       - name: Run reusable job
         run: |
-          echo "Environment: ${{ inputs.deploy-to }}"    
+          echo "Environment: ${{ inputs.deploy-to }}"
+          echo "Secret: ${{ secrets.SUPER_SECRET }}"    

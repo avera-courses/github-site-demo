@@ -8,3 +8,4 @@ jobs:
         uses: ./.github/workflows/reusable-flow.yml
         with:
             deploy-to: "PRD"
+        secrets: inherit
