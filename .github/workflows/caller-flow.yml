@@ -6,3 +6,5 @@ on:
 jobs:
     call_reusable_flow:
         uses: ./.github/workflows/reusable-flow.yml
+        with:
+            deploy-to: "PRD"

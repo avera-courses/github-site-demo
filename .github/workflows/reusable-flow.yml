@@ -2,6 +2,12 @@ name: reusable flow
 
 on:
    workflow_call:
+        inputs:
+            deploy-to:
+                description: 'Environment to deploy'
+                required: true
+                default: 'DEV'
+                type: string
 
 jobs:
   reusable_job:
@@ -12,4 +18,4 @@ jobs:
 
       - name: Run reusable job
         run: |
-          echo "Esse é um workflow reutilizável"  
+          echo "Environment: ${{ inputs.deploy-to }}"    
