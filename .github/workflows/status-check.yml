@@ -1,0 +1,30 @@
+name: status check
+
+on:
+  workflow_run:
+
+jobs:
+  status-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Sempre com sucesso
+        run: echo "Essa etapa sempre será executada com sucesso" 
+      
+      - name: Step 2 - Apenas em caso de sucesso
+        if: success()
+        run: echo "Essa etapa só será executada se a etapa anterior for bem-sucedida"
+
+      - name: Step 3 - Falha Intecional
+        run: exit 1
+
+      - name: Step 4 - Executa em caso de falha
+        if: failure()
+        run: echo "Essa etapa só será executada se a etapa anterior falhar"
+        
+      - name: Step 1 - Executa em caso de cancelamento
+        if: cancelled()
+        run: echo "Essa etapa só será executada se a execução for cancelada"
+        
+      - name: Step 1 - Sempre executada
+        if: always()
+        run: echo "Essa etapa sempre será executada independente do resultado da execução"
