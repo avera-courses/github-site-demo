@@ -11,9 +11,16 @@ on:
         secrets:
             SUPER_SECRET:
                 required: true
+        outputs:
+            success:
+                description: 'Environment to deploy'
+                value: '${{ jobs.reusable_job.outputs.success }}'
+            
 jobs:
   reusable_job:
     runs-on: ubuntu-latest
+    outputs:
+      success: ${{ steps.set-output.outputs.OUTPUT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,4 +28,8 @@ jobs:
       - name: Run reusable job
         run: |
           echo "Environment: ${{ inputs.deploy-to }}"
-          echo "Secret: ${{ secrets.SUPER_SECRET }}"    
+          echo "Secret: ${{ secrets.SUPER_SECRET }}"
+      
+      - name: Set output
+        id: set-output
+        run: echo "OUTPUT=sucesso de output" >> "$GITHUB_OUTPUT"   
