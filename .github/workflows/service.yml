@@ -1,0 +1,23 @@
+name: service demo
+on:
+    workflow_dispatch:
+jobs:
+    service-demo:
+        runs-on: ubuntu-latest
+        services:
+            postgres:
+              image: postgres
+              ports: 
+                - 5432:5432 
+              env:
+                POSTGRES_USER: postgres
+                POSTGRES_PASSWORD: postgres
+                POSTGRES_DB: testdb  
+        steps:
+            - name: Verificar conexão com o banco de dados postgres na porta 5432
+              run: |
+                echo "Verificando conexão com o banco de dados postgres na porta 5432"
+                nc -zv localhost 5432
+                echo "Conexão estabelecida com sucesso!"
+            
+            
